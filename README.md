@@ -15,7 +15,7 @@ of data that may change frequently. To process a large body of data, you will wa
 The user facing copilot. Ask this agent questions and it use the llm to provide answers while reaching out to the S3 
 Search Agent as needed for relevant documents as needed assistance of the repo search agent.
 
-### S3 Search Agent
+### FS Search Agent
 Handles loading, embedding, and re-embedding documents ensuring they are up-to-date.
 
 Translates queries into a vector search query and returns the top results.
@@ -54,4 +54,26 @@ INFO:     Waiting for application startup.
 INFO - Building machine 'local_dev'
 ...
 INFO - Server Started in 1.50s
+```
+
+## Running the Client
+
+Ensure you have the eidolon CLI
+
+```
+python3 -m venv .venv
+. .venv/bin/activate
+pip3 install 'eidolon-ai-client[cli]' -U
+```
+
+Create an agent to talk to:
+
+```
+export PID=$(eidolon-cli processes create --agent ragtime); echo $PID
+```
+
+Send it prompts:
+
+```
+eidolon-cli actions converse --process-id $PID --body "Summarize the topic of every document you are aware of."
 ```
