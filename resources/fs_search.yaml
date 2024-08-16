@@ -1,0 +1,13 @@
+apiVersion: eidolon/v1
+kind: Agent
+metadata:
+  name: fs_search
+
+spec:
+  implementation: RetrieverAgent
+  name: "myfiles"
+  description: "Search a set of files on the filesystem for information"
+  document_manager:
+    loader:
+      implementation: FilesystemLoader
+      root_dir: /docs

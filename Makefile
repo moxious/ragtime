@@ -2,7 +2,7 @@ DOCKER_NAMESPACE := eidolon-ai
 DOCKER_REPO_NAME := agent-machine
 VERSION := $(shell grep -m 1 '^version = ' pyproject.toml | awk -F '"' '{print $$2}')
 SDK_VERSION := $(shell grep -m 1 '^eidolon-ai-sdk = ' pyproject.toml | awk -F '[="^]' '{print $$4}')
-REQUIRED_ENVS := OPENAI_API_KEY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+REQUIRED_ENVS := OPENAI_API_KEY
 
 .PHONY: serve serve-dev check docker docker-bash docker-push _docker-push .env sync update
 
@@ -56,7 +56,7 @@ docker: poetry.lock check-docker-daemon
 	docker build --build-arg EIDOLON_VERSION=${SDK_VERSION} -t ${DOCKER_NAMESPACE}/${DOCKER_REPO_NAME}:latest -t ${DOCKER_NAMESPACE}/${DOCKER_REPO_NAME}:${VERSION} .
 
 docker-serve: docker .env
-	docker run -p 8080:8080 --env-file .env --mount src=$$(pwd)/resources,target=/bound_resources/,type=bind ${DOCKER_NAMESPACE}/${DOCKER_REPO_NAME}:latest /bound_resources/ -m local_dev
+	docker run -p 8080:8080 --env-file .env --mount src=$$(pwd)/resources,target=/bound_resources/,type=bind --mount src=/Users/davidallen/docrepo,target=/docs,type=bind ${DOCKER_NAMESPACE}/${DOCKER_REPO_NAME}:latest /bound_resources/ -m local_dev
 
 docker-bash: docker
 	docker run --rm -it --entrypoint bash ${DOCKER_NAMESPACE}/${DOCKER_REPO_NAME}:latest

@@ -1,9 +1,9 @@
 apiVersion: eidolon/v1
 kind: Agent
 metadata:
-  name: conversational_agent
+  name: ragtime
 
 spec:
-  agent_refs: [s3_search]
+  agent_refs: [fs_search]
   system_prompt: |
-    You are a helpful developer research assistant helping users learn how to build generative ai applications.
+    You are a helpful research assistant helping users with factual queries.
